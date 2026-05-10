@@ -1,0 +1,26 @@
+{
+    "DATASET_NAME": "SHREC25",
+    "MODEL_NAME": "pointnet",
+    "REPRESENTATION": "points",
+    "PHYSIOCHEMICAL": false,
+    "REPRESENTATION_T": 1024,
+    "DEVICE": "cuda:2",
+    "EPOCHS": 200,
+    "PATIENCE": 20,
+    "delta": 0.0,
+    "BATCH_SIZE": 16,
+    "LR_PARAMS": {
+        "OPTIMIZER": "adamw",
+        "SCHEDULER": "step",
+        "LR": 0.0001690324768404654,
+        "WEIGHT_DECAY": 5.572031530726802e-05,
+        "STEP_SIZE": 13,
+        "GAMMA": 0.7478850484665962,
+        "EPOCHS": 200
+    },
+    "LOSS_PARAMS": {
+        "NAME": "ce"
+    },
+    "NUM_WORKERS": 1,
+    "CHECKPOINTS_DIR": "runs/optuna_pointnet/rank2_gpu2/trial_99"
+}

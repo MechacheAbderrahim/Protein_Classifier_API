@@ -1,0 +1,61 @@
+# macOS / editor files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Jupyter / local exploration
+.ipynb_checkpoints/
+
+# Build and packaging artifacts
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+logs/
+
+# Local dependency snapshots
+requirements-full.txt
+
+# Large/generated local data
+data/surfaces/
+
+# Optional: keep raw sample PDB files out of Git by default.
+# Remove this line if you explicitly want to version a tiny demo input.
+data/*.pdb
+
+# Model weights are usually stored in a model registry or release artifact.
+*.pt
+*.pth
+*.ckpt
+
+# Keep only the Linux binary needed by Docker/CI.
+utils/EDTSurf
+utils/EDTSurf.exe
+
+# Docker local files
+docker-compose.override.yml

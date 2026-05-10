@@ -1,0 +1,37 @@
+# Git and local metadata
+.git
+.gitignore
+
+# Python cache and test cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local environments
+.venv/
+venv/
+env/
+.env
+
+# Notebooks and exploratory artifacts are not needed in the runtime image.
+*.ipynb
+
+# Test files stay outside the production Docker image.
+tests/
+pytest.ini
+
+# Full environment snapshots are useful locally but too noisy for Docker.
+requirements-full.txt
+requirements-dev.txt
+
+# Local OS/editor files
+.DS_Store
+.idea/
+.vscode/
+
+# Docker only needs the Linux EDTSurf binary.
+utils/EDTSurf
+utils/EDTSurf.exe
+
+# Sample data is not required at runtime because users upload input files.
+data/

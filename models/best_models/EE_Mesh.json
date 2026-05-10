@@ -1,0 +1,38 @@
+{
+    "DATASET_PATH": "dataset/SHREC25/graphs",
+    "MODEL_NAME": "nnconv",
+    "PHYSIOC": false,
+    "EPOCHS": 200,
+    "DEVICE": "cuda:0",
+    "PATIENCE": 20,
+    "DELTA": 0.0,
+    "BATCH_SIZE": 256,
+    "NUM_WORKERS": 1,
+    "SEED": 42,
+    "DATA": {
+        "NORM": false,
+        "METHOD": "kmeans",
+        "N_BINS": 16
+    },
+    "MODEL": {
+        "EDGE_DIM": 3,
+        "EDGE_MLP_DIM": 8,
+        "EMBEDDING_SIZE": 32,
+        "AGGR": "mean",
+        "DROPOUT": 0.4050279709814971
+    },
+    "LR_PARAMS": {
+        "OPTIMIZER": "adamw",
+        "SCHEDULER": "cos",
+        "UPDATE": "epoch",
+        "UPDATE_1": 0,
+        "LR": 0.0018072884612425869,
+        "WEIGHT_DECAY": 5.31068899782291e-05,
+        "T_MAX": 200
+    },
+    "LOSS": {
+        "NAME": "ce_weighted",
+        "ALPHA": 0.22611988436747354
+    },
+    "CHECKPOINTS_DIR": "runs/optuna_edge_enriched/rank0_gpu0"
+}

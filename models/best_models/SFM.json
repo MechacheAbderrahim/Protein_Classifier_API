@@ -1,0 +1,43 @@
+{
+    "DATASET_PATH": "dataset/SHREC25/graphs",
+    "MODEL_NAME": "gcnn",
+    "PHYSIOC": false,
+    "EPOCHS": 200,
+    "DEVICE": "cuda:1",
+    "PATIENCE": 20,
+    "DELTA": 0.0,
+    "BATCH_SIZE": 32,
+    "NUM_WORKERS": 1,
+    "SEED": 42,
+    "DATA": {
+        "NORM": true,
+        "METHOD": ""
+    },
+    "MODEL": {
+        "EMBEDDING_SIZE": 64,
+        "GCN_LAYERS": 2,
+        "MLP_DIMS": [
+            1024
+        ],
+        "DROP_OUT": 0.41051729279077165,
+        "USE_INPUT_PROJ": false,
+        "USE_RESIDUAL": true,
+        "USE_BN": false,
+        "CONV_DROPOUT": 0.016725762856166535
+    },
+    "LR_PARAMS": {
+        "OPTIMIZER": "adamw",
+        "SCHEDULER": "cos",
+        "UPDATE": "epoch",
+        "UPDATE_1": 0,
+        "LR": 0.0009258391211715519,
+        "WEIGHT_DECAY": 1.5301802098800984e-05,
+        "T_MAX": 200
+    },
+    "LOSS": {
+        "NAME": "focal",
+        "GAMMA": 1.2741549870116349,
+        "ALPHA": 0.367474687943058
+    },
+    "CHECKPOINTS_DIR": "runs/optuna_sfm_module/rank1_gpu1"
+}
