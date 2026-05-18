@@ -62,6 +62,24 @@ Run the API locally:
 python3.11 -m uvicorn api:app --reload
 ```
 
+If model weights are not stored locally, set the remote model storage URL:
+
+```bash
+export MODEL_BASE_URL="https://<storage-account>.blob.core.windows.net/<container>"
+```
+
+The API first looks for:
+
+```text
+models/best_models/<model_name>.pt
+```
+
+If the file is missing, it downloads:
+
+```text
+$MODEL_BASE_URL/<model_name>.pt
+```
+
 Open:
 
 ```text
@@ -185,4 +203,3 @@ Next:
 - public deployment with Azure Container Apps
 - logging and basic monitoring
 - model versioning metadata
-

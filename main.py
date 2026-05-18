@@ -1,12 +1,19 @@
-from pathlib import Path
-import subprocess
-import time
 import argparse
 import json
+import logging
+import os
+import subprocess
+import time
+from pathlib import Path
+from urllib.parse import urlsplit, urlunsplit
+from urllib.request import urlretrieve
 
 
 SUPPORTED_INPUT_SUFFIXES = {".pdb", ".ply", ".off"}
 SURFACE_INPUT_SUFFIXES = {".ply", ".off"}
+MODEL_WEIGHTS_DIR = Path("models/best_models")
+MODEL_BASE_URL_ENV = "MODEL_BASE_URL"
+logger = logging.getLogger(__name__)
 
 
 def convert_old_nnconv_checkpoint_state_dict(state_dict):
@@ -46,6 +53,65 @@ def convert_old_nnconv_checkpoint_state_dict(state_dict):
             new_state_dict[key] = value
 
     return new_state_dict
+
+def get_model_weights_path(model_name, model_dir=MODEL_WEIGHTS_DIR):
+    model_name_path = Path(model_name)
+
+    if model_name_path.name != model_name or model_name_path.suffix:
+        raise ValueError(f"Invalid model name: {model_name}")
+
+    return Path(model_dir) / f"{model_name}.pt"
+
+def get_model_weights_url(model_name):
+    model_base_url = os.getenv(MODEL_BASE_URL_ENV)
+
+    if not model_base_url:
+        return None
+
+    url_parts = urlsplit(model_base_url)
+    model_path = f"{url_parts.path.rstrip('/')}/{model_name}.pt"
+
+    return urlunsplit(
+        (
+            url_parts.scheme,
+            url_parts.netloc,
+            model_path,
+            url_parts.query,
+            url_parts.fragment,
+        )
+    )
+
+def ensure_model_weights(model_name, model_dir=MODEL_WEIGHTS_DIR):
+    model_path = get_model_weights_path(model_name, model_dir=model_dir)
+
+    if model_path.exists():
+        return model_path
+
+    model_url = get_model_weights_url(model_name)
+
+    if not model_url:
+        raise FileNotFoundError(
+            f"Model weights not found: {model_path}. "
+            f"Set {MODEL_BASE_URL_ENV} to download model weights."
+        )
+
+    model_path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_model_path = model_path.with_suffix(".pt.download")
+
+    logger.info("Downloading model weights from %s", model_url)
+
+    try:
+        urlretrieve(model_url, temporary_model_path)
+        temporary_model_path.replace(model_path)
+    except Exception as exc:
+        if temporary_model_path.exists():
+            temporary_model_path.unlink()
+
+        raise RuntimeError(
+            f"Failed to download model weights from {model_url}"
+        ) from exc
+
+    return model_path
 
 def generate_surface_from_single_pdb(
     pdb_path: str | Path,
@@ -413,8 +479,10 @@ def main(
     surface_path = prepare_surface_input(input_path, edtsurf_bin=edtsurf_bin)
     input_is_precomputed_surface = input_path.suffix.lower() in SURFACE_INPUT_SUFFIXES
 
+    model_weights_path = ensure_model_weights(model_name)
+
     best_model_dict = torch.load(
-        f"models/best_models/{model_name}.pt",
+        model_weights_path,
         map_location=device,
         weights_only=False,
     )
